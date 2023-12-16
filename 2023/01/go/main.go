@@ -24,7 +24,7 @@ func main() {
 	for _, line := range eachLineOfInput {
 		lineSum := ""
 		for _, direction := range []bool{fromLeft, fromRight} {
-			found := parseDigits(direction, &line)
+			found := parseDigits(direction, line)
 			if found != "" {
 				lineSum += found
 			}
@@ -41,8 +41,7 @@ func main() {
 }
 
 // jank
-func parseDigits(startFromLeft bool, orig *string) string {
-	s := *orig
+func parseDigits(startFromLeft bool, s string) string {
 	if startFromLeft {
 		for idx := 0; idx < len(s); idx++ {
 			c, err := strconv.Atoi(string(s[idx]))
