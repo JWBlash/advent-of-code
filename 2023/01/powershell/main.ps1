@@ -7,7 +7,6 @@ function GetTotal {
     $sum = 0
 
     foreach ($line in $fileContent) {
-        $msg = "line: {0}" -f $line
         $first = FindFirstDigitInLine $line
         $rev = ReverseString $line
         $last = FindFirstDigitInLine -line $rev 
