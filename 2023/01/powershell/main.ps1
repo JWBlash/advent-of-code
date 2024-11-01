@@ -1,35 +1,46 @@
 
 # reads data from the "sample" file and does the thing
-function FindFirstDigit {
-    param($FName)
-    $fileContent = Get-Content -Path "$PWD\$FName"
+function GetTotal {
+    param($fname)
+    $fileContent = Get-Content -Path "$PWD\$fname"
+
+    $sum = 0
 
     foreach ($line in $fileContent) {
-        foreach ($char in $line.ToCharArray()) {
-            if ([char]::IsDigit($char)) {
-                Write-Output $char
-                break
-            }
+        $msg = "line: {0}" -f $line
+        $first = FindFirstDigitInLine $line
+        $rev = ReverseString $line
+        $last = FindFirstDigitInLine -line $rev 
+        $total = "{0}{1}" -f $first, $last
+        $linesum = [int]$total
+        $sum += $linesum
+    }
+    return $sum
+}
+
+function FindFirstDigitInLine {
+    param ($line)
+    foreach ($char in $line.ToCharArray()) {
+        if ([char]::IsDigit($char)) {
+            Write-Output $char
+            break
         }
     }
 }
 
 function ReverseString {
     param($ToReverse)
-    $result = -join ($ToReverse.ToCharArray() | [Array]::Reverse())
-    return $result
+    $result = ($ToReverse.ToCharArray())
+    [Array]::Reverse($result)
+    return -join $result
 }
 
 # just for the sake of organization
 function Main {
-    # for testing
-    FindFirstDigit -FName "sample"
-
-    $yap = ReverseString -ToReverse YPAPPING
-    Write-Output $yap
-
-    # for actual run
-    # FindFirstDigit -FName "input"
+    # sample output
+    # $total = GetTotal sample
+    $total = GetTotal input 
+    Write-Output $total
 }
 
 # calls the main func
