@@ -77,7 +77,7 @@ function Main {
     $first = ""
 
     $in = "7onetwo3four"
-    $num = "four"
+    $num = "one"
     $a = $in -split $num
     $b = "len: {0} | firstpartLen: {1} | lastpartLen: {2}" -f $in.Length, $a[0].Length, $a[1].Length
     $firstpart = ($in.Length-($in.Length-$a[0].Length))
@@ -85,6 +85,17 @@ function Main {
     # when used as an index. just keep that in mind!
     $secondpart = $firstpart + $num.Length
     $c = "appears at {0}, in[{1}] should be the first letter of the 2nd part" -f $firstpart, $secondpart
+
+    # this should run at the very end of all splitting
+    # needs to be a char array
+
+    $innarr = $in.ToCharArray()
+    for ($i = $secondpart; $i -lt $innarr.Count; $i++) {
+        if ([char]::IsDigit($innarr[$i])) {
+            $o = "{0} is a number in the second part" -f $in[$i] 
+            Write-Output $o
+        }
+    }
 
     # "handle" the case where there are multiple in one line
     # mostly just pray this naive algo doesn't bump into that :)
