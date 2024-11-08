@@ -7,15 +7,126 @@ function GetTotal {
     $sum = 0
 
     foreach ($line in $fileContent) {
-        $first = FindFirstDigitInLine $line
-        $rev = ReverseString $line
+        $fixedLine = SubFirstAndLast $line
+        $first = FindFirstDigitInLine $fixedline
+        $rev = ReverseString $fixedline
         $last = FindFirstDigitInLine -line $rev 
         $total = "{0}{1}" -f $first, $last
         $linesum = [int]$total
+        $tmpsum = $sum
         $sum += $linesum
+        Write-Host "[$line]: $tmpsum + $linesum = $sum"
     }
     return $sum
 }
+
+function SubFirstAndLast {
+    param([string] $line)
+    $a = ReplaceFirstWordInLine $line
+    $b = ReplaceLastWordInLine $a
+    return $b
+}
+
+# replace the first digit-word in the line with a proper int
+function ReplaceFirstWordInLine {
+    param([string] $line)
+
+    $empty = ""
+    $needReplace = $true
+
+    foreach ($char in $line.ToCharArray()) {
+        $empty += $char
+        if ($empty.Contains("one") -and $needReplace) {
+            $line = $line.Replace("one", "1")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("two") -and $needReplace) {
+            $line = $line.Replace("two", "2")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("three") -and $needReplace) {
+            $line = $line.Replace("three", "3")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("four") -and $needReplace) {
+            $line = $line.Replace("four", "4")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("five") -and $needReplace) {
+            $line = $line.Replace("five", "5")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("six") -and $needReplace) {
+            $line = $line.Replace("six", "6")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("seven") -and $needReplace) {
+            $line = $line.Replace("seven", "7")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("eight") -and $needReplace) {
+            $line = $line.Replace("eight", "8")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("nine") -and $needReplace) {
+            $line = $line.Replace("nine", "9")
+            $needReplace = $false
+        }
+    }
+    return $line
+}
+
+# replace the last digit-word in the line with a proper int
+# this is so stupid
+function ReplaceLastWordInLine {
+    param($line)
+
+    $empty = ""
+    $needReplace = $true
+
+    for ($i = $line.ToCharArray().Count; $i -ge 0; $i--) {
+        $empty += $line[$i]
+        if ($empty.Contains("eno") -and $needReplace) {
+            $line = $line.Replace("one", "1")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("owt") -and $needReplace) {
+            $line = $line.Replace("two", "2")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("eerht") -and $needReplace) {
+            $line = $line.Replace("three", "3")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("ruof") -and $needReplace) {
+            $line = $line.Replace("four", "4")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("evif") -and $needReplace) {
+            $line = $line.Replace("five", "5")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("xis") -and $needReplace) {
+            $line = $line.Replace("six", "6")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("neves") -and $needReplace) {
+            $line = $line.Replace("seven", "7")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("thgie") -and $needReplace) {
+            $line = $line.Replace("eight", "8")
+            $needReplace = $false
+        }
+        elseif ($empty.Contains("enin") -and $needReplace) {
+            $line = $line.Replace("nine", "9")
+            $needReplace = $false
+        }
+
+    }
+    return $line
+}
+
 
 function FindFirstDigitInLine {
     param ($line)
@@ -34,85 +145,15 @@ function ReverseString {
     return -join $result
 }
 
-function IfStringIsDigit {
-    param($str)
-    switch ($str) {
-        "one" { 1 }
-        "two" { 2 }
-        "three" { 3 }
-        "four" { 4 }
-        "five" { 5 }
-        "six" { 6 }
-        "seven" { 7 }
-        "eight" { 8 }
-        "nine" { 9 }
-    }
-}
-
-# just for practice, see if there is ANY number in the line
-# this will help me figure out the logic
-function FindFirstNumber {
-    param($line)
-
-    $least = 0
-    $firstPartLen = 0
-    $lastPartLen = 0
-
-    # split on 'one'
-    $ar = $line -split "one"
-}
-
 # just for the sake of organization
 function Main {
     # pt1 sample 
     # $total = GetTotal sample
     # pt1 total 
-    # $total = GetTotal input 
+    $total = GetTotal input 
     # pt2 sample
     # $total = GetTotal pt2sample 
-    # Write-Output $total
-
-    $leftMin = 0
-    # $rightMin = 0
-    $first = ""
-
-    $in = "7onetwo3four"
-    $num = "one"
-    $a = $in -split $num
-    $b = "len: {0} | firstpartLen: {1} | lastpartLen: {2}" -f $in.Length, $a[0].Length, $a[1].Length
-    $firstpart = ($in.Length-($in.Length-$a[0].Length))
-    # since we're dealing with lengths and not indices, this can run over the buffer
-    # when used as an index. just keep that in mind!
-    $secondpart = $firstpart + $num.Length
-    $c = "appears at {0}, in[{1}] should be the first letter of the 2nd part" -f $firstpart, $secondpart
-
-    # this should run at the very end of all splitting
-    # needs to be a char array
-
-    $innarr = $in.ToCharArray()
-    for ($i = $secondpart; $i -lt $innarr.Count; $i++) {
-        if ([char]::IsDigit($innarr[$i])) {
-            $o = "{0} is a number in the second part" -f $in[$i] 
-            Write-Output $o
-        }
-    }
-
-    # "handle" the case where there are multiple in one line
-    # mostly just pray this naive algo doesn't bump into that :)
-    if ($a.Length -gt 2) {
-        Write-Output "oh no!"
-        return 
-    }
-    Write-Output $in[$secondpart]
-    Write-Output $b
-    Write-Output $c
-
-    # this is a one-off assignment. we'll save this value
-    # and check afterwards if there's any digits that appear in the
-    # string before this position
-    # $leftMin = $a[0].Length
-    # if ($leftMin -lt )
-
+    Write-Output $total
 }
 
 # calls the main func
