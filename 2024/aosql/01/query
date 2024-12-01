@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+psql santa_samples -f query.sql
