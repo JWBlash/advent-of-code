@@ -14,21 +14,16 @@ with open(file_to_read, "r") as f:
         left_list.append(int(split_line[0]))
         right_list.append(int(split_line[1].strip("\n")))
 
-left_list.sort()
-right_list.sort()
+unique_left = set(left_list)
+translation_map = {}
 
-# make sure these things are the same size before we loop over them
-if len(left_list) != len(right_list):
-    print("real problem here")
-    sys.exit(1)
+for item in unique_left:
+    times_appeared = right_list.count(item)
+    translation_map[item] = item * times_appeared
 
 sum_of_distances = 0
 
-idx = 0
-while idx < len(left_list):
-    distance = abs(left_list[idx] - right_list[idx])
-    sum_of_distances += distance
-    idx += 1
+for item in left_list:
+    sum_of_distances += translation_map[item]
 
 print(f"total distance: {sum_of_distances}")
-
