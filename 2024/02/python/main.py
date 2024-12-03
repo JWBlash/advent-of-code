@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-import sys
+file_to_read = "input"
+debug = False
 
-file_to_read = "sample"
 
 def split_to_ints(levels):
     return [int(num) for num in levels]
@@ -12,8 +12,12 @@ def adj_check(x, y):
     return abs(x - y) <= 3 and abs(x - y) > 0
     
 
-def problem_dampener(levels_no_problem):
-        return is_increasing_safely(levels_no_problem, dampen=False) or is_decreasing_safely(levels_no_problem, dampen=False)
+def problem_dampener_increasing(levels_no_problem):
+        return is_increasing_safely(levels_no_problem, dampen=False)
+
+
+def problem_dampener_decreasing(levels_no_problem):
+        return is_decreasing_safely(levels_no_problem, dampen=False)
 
 
 def is_increasing_safely(levels, dampen=True):
@@ -22,16 +26,18 @@ def is_increasing_safely(levels, dampen=True):
     while idx < len(levels):
         try:
             this = levels[idx]
-            following = levels[idx+1]
+            next = levels[idx+1]
         except IndexError:
             break 
-        if this >= following or not adj_check(this, following):
-            if (dampen):
-                arr = levels[:idx]+levels[idx+1:]
-                if problem_dampener(arr):
-                    continue
+        if this >= next or not adj_check(this, next):
+            if dampen:
+                without_this = levels.copy()
+                without_this.remove(this)
+                without_next = levels.copy()
+                without_next.remove(next)
+                if problem_dampener_increasing(without_this) or problem_dampener_increasing(without_next):
+                    return True
             safe = False
-            break 
         idx += 1
     return safe 
 
@@ -42,16 +48,18 @@ def is_decreasing_safely(levels, dampen=True):
     while idx < len(levels):
         try:
             this = levels[idx]
-            following = levels[idx+1]
+            next = levels[idx+1]
         except IndexError:
             break 
-        if this <= following or not adj_check(this, following):
-            if (dampen):
-                arr = levels[:idx]+levels[idx+1:]
-                if problem_dampener(arr):
-                    continue
+        if this <= next or not adj_check(this, next):
+            if dampen:
+                without_this = levels.copy()
+                without_this.remove(this)
+                without_next = levels.copy()
+                without_next.remove(next)
+                if problem_dampener_decreasing(without_this) or problem_dampener_decreasing(without_next):
+                    return True
             safe = False
-            break
         idx += 1
     return safe
 
