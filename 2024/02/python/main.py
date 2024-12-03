@@ -13,7 +13,7 @@ def adj_check(x, y):
     
 
 def is_increasing_safely(levels):
-    increasing = True
+    safe = True
     idx = 0
     while idx < len(levels):
         try:
@@ -22,25 +22,26 @@ def is_increasing_safely(levels):
         except IndexError:
             break 
         if this >= following or not adj_check(this, following):
-            increasing = False
+            safe = False
             break 
         idx += 1
-    return increasing
+    return safe 
+
 
 def is_decreasing_safely(levels):
-    decreasing = True
+    safe = True
     idx = 0
     while idx < len(levels):
         try:
             this = levels[idx]
             following = levels[idx+1]
             if this <= following or not adj_check(this, following):
-                decreasing = False
+                safe = False
                 break
         except IndexError:
             break 
         idx += 1
-    return decreasing 
+    return safe
 
 
 num_safe = 0
