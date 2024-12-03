@@ -30,10 +30,10 @@ def problem_dampener_decreasing(levels_no_problem):
 
 def is_safe(levels, increasing=True, dampen=True):
     if increasing:
-        safety_func = is_increasing
+        safety_check = is_increasing
         dampen_func = problem_dampener_increasing
     else:
-        safety_func = is_decreasing 
+        safety_check = is_decreasing 
         dampen_func = problem_dampener_decreasing
     safe = True
     idx = 0
@@ -43,7 +43,7 @@ def is_safe(levels, increasing=True, dampen=True):
             next = levels[idx+1]
         except IndexError:
             break 
-        if safety_func(this, next) or not adj_check(this, next):
+        if safety_check(this, next) or not adj_check(this, next):
             safe = False
         if not safe and dampen:
             without_this = levels.copy()
