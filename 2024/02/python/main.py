@@ -30,14 +30,14 @@ def is_increasing_safely(levels, dampen=True):
         except IndexError:
             break 
         if this >= next or not adj_check(this, next):
-            if dampen:
-                without_this = levels.copy()
-                without_this.remove(this)
-                without_next = levels.copy()
-                without_next.remove(next)
-                if problem_dampener_increasing(without_this) or problem_dampener_increasing(without_next):
-                    return True
             safe = False
+        if not safe and dampen:
+            without_this = levels.copy()
+            del without_this[idx]
+            without_next = levels.copy()
+            del without_next[idx+1]
+            if problem_dampener_increasing(without_this) or problem_dampener_increasing(without_next):
+                safe = True
         idx += 1
     return safe 
 
@@ -52,14 +52,14 @@ def is_decreasing_safely(levels, dampen=True):
         except IndexError:
             break 
         if this <= next or not adj_check(this, next):
-            if dampen:
-                without_this = levels.copy()
-                without_this.remove(this)
-                without_next = levels.copy()
-                without_next.remove(next)
-                if problem_dampener_decreasing(without_this) or problem_dampener_decreasing(without_next):
-                    return True
             safe = False
+        if not safe and dampen:
+            without_this = levels.copy()
+            del without_this[idx]
+            without_next = levels.copy()
+            del without_next[idx+1]
+            if problem_dampener_decreasing(without_this) or problem_dampener_decreasing(without_next):
+                safe = True
         idx += 1
     return safe
 
