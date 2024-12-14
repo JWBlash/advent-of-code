@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-import sys
-
 file_to_read = "input"
 
 left_list = []
